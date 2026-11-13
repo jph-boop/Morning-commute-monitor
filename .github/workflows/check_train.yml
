@@ -2,6 +2,7 @@ name: Morning Train Monitor Agent
 
 on:
   schedule:
+    # Triggers at 07:25 UTC on weekdays (Mon-Fri)
     - cron: '25 7 * * 1-5'
   workflow_dispatch:
 
@@ -27,7 +28,6 @@ jobs:
           NRE_TOKEN: ${{ secrets.NRE_TOKEN }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # Anonymized station secrets
           LEG_1_ORIGIN: ${{ secrets.LEG_1_ORIGIN }}
           LEG_1_DEST: ${{ secrets.LEG_1_DEST }}
           LEG_2_ORIGIN: ${{ secrets.LEG_2_ORIGIN }}
