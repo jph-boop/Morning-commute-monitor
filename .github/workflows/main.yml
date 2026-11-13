@@ -1,0 +1,35 @@
+name: Morning Train Monitor Agent
+
+on:
+  schedule:
+    # Triggers at 07:25 UTC on weekdays (Mon-Fri)
+    - cron: '25 7 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  monitor-trains:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Morning Train Monitor Loop
+        env:
+          NRE_TOKEN: ${{ secrets.NRE_TOKEN }}
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          LEG_1_ORIGIN: ${{ secrets.LEG_1_ORIGIN }}
+          LEG_1_DEST: ${{ secrets.LEG_1_DEST }}
+          LEG_2_ORIGIN: ${{ secrets.LEG_2_ORIGIN }}
+          LEG_2_DEST: ${{ secrets.LEG_2_DEST }}
+        run: python morning_train_monitor.py --loop --interval 90 --duration 7500
